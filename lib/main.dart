@@ -59,8 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final numberGenerator_1 = NumberGenerator();
     final logger = DebugLogger();
     final number = numberGenerator_1.generateNumber();
-    await FileManager().readFileFromAssets('assets/log.txt');
-    await FileManager().writeFile(number.toString(), 'assets/log.txt');
+    await FileManager().writeFile(number.toString(), 'assets/log_1.txt');
     logger.log('number is: $number', 'sample error message');
   }
 

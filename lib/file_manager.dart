@@ -21,9 +21,8 @@ import 'debug_logger.dart';
   }
 
   Future<void> writeFile(String content, String filePath) async {
-    await rootBundle.loadString(filePath);
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/$filePath');
+    final directory = await getApplicationSupportDirectory();
+    final file =  File('${directory.path}/$filePath');
     await file.writeAsString(content);
   }
   }
