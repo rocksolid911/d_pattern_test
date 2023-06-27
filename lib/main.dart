@@ -33,19 +33,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   var r ;
-  // void _incrementCounter() {
-  //   final logger = DebugLogger();
-  //   setState(() {
-  //     logger.log('counter is: $_counter', 'sample error message');
-  //     _counter++;
-  //   });
-  // }
 
    generateNumber() {
     final numberGenerator_1 = NumberGenerator();
-    final numberGenerator_2 = NumberGenerator();
     final logger = DebugLogger();
     setState(() {
       logger.log('number is: ${numberGenerator_1.generateNumber()}', 'sample error message');
@@ -59,10 +50,18 @@ class _MyHomePageState extends State<MyHomePage> {
     final numberGenerator_1 = NumberGenerator();
     final logger = DebugLogger();
     final number = numberGenerator_1.generateNumber();
-    await FileManager().writeFile(number.toString(), 'assets/log_1.txt');
+    //await FileManager().writeFile(number.toString(), 'log_1.txt');
     logger.log('number is: $number', 'sample error message');
   }
 
+  readFromFile() async {
+    final logger = DebugLogger();
+    final content = await FileManager().readFileFromAssets('log_1.txt');
+    setState(() {
+      r = content;
+    });
+    print(content);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,15 +72,22 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Spacer(),
-            const Text(
-              'You have pushed the button this many times:',
+            Expanded(
+              child: SingleChildScrollView(
+                controller: ScrollController(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        '$r\n',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            Text(
-              'generated no is $r',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 28.0),
               child: Row(
@@ -91,6 +97,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: generateNumber,
                     tooltip: 'Increment',
                     child: const Icon(Icons.add),
+                  ),
+                  FloatingActionButton(
+                    onPressed: readFromFile,
+                    tooltip: 'Increment',
+                    backgroundColor: Colors.purple,
+                    child: const Icon(Icons.safety_check),
                   ),
                   FloatingActionButton(
                     onPressed: generateAndWriteNumber,

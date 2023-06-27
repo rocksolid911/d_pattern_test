@@ -1,3 +1,4 @@
+import 'package:d_pattern_test/file_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -25,7 +26,7 @@ class DebugLogger extends BaseLogger {
   DebugLogger._internal() {
     Logger.level = Level.debug;
   //  Logger.root.onRecord.listen(_recordHandler);
-   // Logger.addLogListener((event) =>_recordHandler);
+    Logger.addLogListener((event) =>_recordHandler(event));
     _logger_1 = Logger(
       printer: PrettyPrinter(
         methodCount: 2,
@@ -34,7 +35,8 @@ class DebugLogger extends BaseLogger {
         colors: true,
         printEmojis: true,
         printTime: true,
-      ),);
+      ),
+    );
     debugPrint('<DebugLogger> creation');
     _instance = this;
   }
@@ -45,10 +47,11 @@ class DebugLogger extends BaseLogger {
 
   /// record handler for the logging message content
   /// it is added in the private constructor
-  void _recordHandler(LogOutput rec) {
-  //   debugPrint(
-  //       '${_dateFormatter.format(rec)}: ${rec.message}, ${rec.error}');
-  // }
-  //  debugPrint('$rec');
+  void _recordHandler(LogEvent event) {
+    FileManager().writeFile(
+        ' ${_dateFormatter.format(event.time)} ${event.message}\n',
+        'log_1.txt');
+    debugPrint(
+        '${event.level.name} ${_dateFormatter.format(event.time)} ${event.message}');
   }
 }
