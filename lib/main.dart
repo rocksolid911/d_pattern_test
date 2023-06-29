@@ -1,3 +1,4 @@
+import 'package:d_pattern_test/shape_page.dart';
 import 'package:flutter/material.dart';
 
 import 'debug_logger.dart';
@@ -67,6 +68,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+       actions: [
+         IconButton(onPressed: (){
+           Navigator.push(context, MaterialPageRoute(builder: (context)=>ShapePage()));
+         }, icon: Icon(Icons.near_me))],
       ),
       body: Center(
         child: Column(
